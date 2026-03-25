@@ -62,5 +62,21 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const DEFAULT_PORT = Number(process.env.PORT) || 3000;
+
+function startServer(port) {
+  server
+    .listen(port, () => console.log(`Server running on port ${port}`))
+    .once("error", (error) => {
+      if (error.code === "EADDRINUSE") {
+        const nextPort = port + 1;
+        console.log(`Port ${port} is in use. Trying ${nextPort}...`);
+        server.close(() => startServer(nextPort));
+        return;
+      }
+
+      throw error;
+    });
+}
+
+startServer(DEFAULT_PORT);

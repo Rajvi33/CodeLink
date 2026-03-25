@@ -4,6 +4,49 @@ const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
 const leaveBtn = document.getElementById('leave-btn');
+const lightModeBtn = document.getElementById('light-mode-btn');
+const darkModeBtn = document.getElementById('dark-mode-btn');
+
+// Apply theme
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+    darkModeBtn?.classList.add('active-theme');
+    lightModeBtn?.classList.remove('active-theme');
+  } else {
+    document.body.classList.remove('dark-mode');
+    lightModeBtn?.classList.add('active-theme');
+    darkModeBtn?.classList.remove('active-theme');
+  }
+}
+
+// Get saved/system theme
+function getPreferredTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) return savedTheme;
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+}
+
+// Load theme on page open
+applyTheme(getPreferredTheme());
+
+// Theme button events
+if (lightModeBtn) {
+  lightModeBtn.addEventListener('click', () => {
+    applyTheme('light');
+    localStorage.setItem('theme', 'light');
+  });
+}
+
+if (darkModeBtn) {
+  darkModeBtn.addEventListener('click', () => {
+    applyTheme('dark');
+    localStorage.setItem('theme', 'dark');
+  });
+}
 
 // Get username and room from URL
 const { username, room } = Qs.parse(location.search, {
