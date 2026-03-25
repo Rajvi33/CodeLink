@@ -127,6 +127,25 @@ a {
 	flex: 1;
 }
 
+.chat-messages .message .message-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 7px;
+	gap: 10px;
+}
+
+.chat-messages .message .message-header .meta {
+	margin-bottom: 0;
+}
+
+.chat-messages .message .message-time {
+	font-size: 13px;
+	color:#777;
+	white-space: nowrap;
+	margin-left: auto;
+}
+
 /* Join Page */
 .join-container {
 	max-width: 500px;

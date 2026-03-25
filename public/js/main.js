@@ -46,24 +46,38 @@ chatForm.addEventListener('submit', (e) => {
   e.target.elements.msg.focus();
 });
 
+// Format time in user's local timezone
+function formatLocalTime(timestamp) {
+  return new Date(timestamp).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
 // Output message to DOM
 function outputMessage(message) {
   const div = document.createElement('div');
   div.classList.add('message');
 
-  const p = document.createElement('p');
-  p.classList.add('meta');
-  p.textContent = message.username;
+  const header = document.createElement('div');
+  header.classList.add('message-header');
+
+  const username = document.createElement('p');
+  username.classList.add('meta');
+  username.textContent = message.username;
 
   const time = document.createElement('span');
-  time.textContent = message.time;
-  p.appendChild(time);
+  time.classList.add('message-time');
+  time.textContent = formatLocalTime(message.time);
+
+  header.appendChild(username);
+  header.appendChild(time);
 
   const para = document.createElement('p');
   para.classList.add('text');
   para.textContent = message.text;
 
-  div.appendChild(p);
+  div.appendChild(header);
   div.appendChild(para);
   chatMessages.appendChild(div);
 
